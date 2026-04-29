@@ -24,14 +24,14 @@ module state_cntr(
     input clk,
     input reset,
     output pulse,
-    output reg [5:0] cnt
+    output reg [6:0] cnt
     );
 
-reg [5:0] next_cnt;
+    reg [6:0] next_cnt;
 
 // flip-flops (state memeory)
 always @(posedge clk or posedge reset) begin
-    if (reset) cnt<=5'd0; // reset to zero 
+    if (reset) cnt<=6'd0; // reset to zero 
     else cnt <= next_cnt;
 end
 
@@ -40,7 +40,7 @@ always @(*) begin
     if(en) begin // check for the enable 
         if (cnt [3:0] == 4'b1001) begin 
         next_cnt[3:0] = 4'd0;
-        next_cnt[5:4] = cnt[5:4] +1;
+            next_cnt[6:4] = cnt[6:4] +1;
         end// if the counter reaches 15 go back to zero 
         
         else next_cnt[3:0] = cnt[3:0] + 1; // new concept -- a counter! 
@@ -49,15 +49,6 @@ always @(*) begin
 end
 
 // output logic 
-assign pulse = ((cnt[5:4] == 2'D3) && (cnt[3:0] == 4'D9)); // at the last state send out a pulse 
-
-endmodule
-
-module count_to(
-input [3:0] max_num,
-input en,
-output reg[3:0] num,
-output C_out
-);
+    assign pulse = ((cnt[6:4] == 3'D5) && (cnt[3:0] == 4'D4)); // at the last state send out a pulse 
 
 endmodule
